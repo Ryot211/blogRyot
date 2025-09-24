@@ -2,13 +2,33 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from .models import Articulo
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib.auth import logout
+
+
+def mi_logout(request):
+    logout(request)
+    return render(request, "registration/logged_out.html")
+
+#registro de usuarios
+def registro(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # iniciar sesión tras registrarse
+            return redirect('/')
+    else:
+        form = UserCreationForm()
+    return render(request, "registration/registro.html", {"form": form})
 
 #Articulo
 def listadoArticulo (request):
     articulosBdd= Articulo.objects.all()
     
     return render (request, "Muro.html",{'articuloss':articulosBdd})
-
+@login_required
 def CrearArticulo(request):
     if request.method == "POST":
         titulo_art = request.POST["titulo_art"]
@@ -21,4 +41,6 @@ def CrearArticulo(request):
         articulo.save()
         messages.success(request,"Post Creado")
         return redirect("/")  
+    # Si no es POST, mostrar el formulario vacío
+    return render(request, "Muro.html")
 # Create your views here.
