@@ -24,10 +24,22 @@ def registro(request):
     return render(request, "registration/registro.html", {"form": form})
 
 #Articulo
+
+
+
 def listadoArticulo (request):
     articulosBdd= Articulo.objects.all()
+    return render (request, "Inicio.html",{'articulos':articulosBdd})
+@login_required
+def listadoArticuloUser(request):
+    if request.user.is_authenticated:
+        articulosBdd = Articulo.objects.filter(autor_art=request.user).order_by('creacion_art')
+        return render (request,"Muro.html",{"articulos":articulosBdd})
+    else:
+        return render(request, "Muro.html", {"articulos": []})
     
-    return render (request, "Muro.html",{'articuloss':articulosBdd})
+
+
 @login_required
 def CrearArticulo(request):
     if request.method == "POST":

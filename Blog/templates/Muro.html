@@ -1,51 +1,63 @@
 {% extends "plantilla.html" %}
 {% block contenido %}
 {% load static %}
-<br>
-<br>
+
+<br><br>
 
 <div class="row">
-    <div class="col-md-10" >
+    <div class="col-md-2">
 
     </div>
-    <div class="col-md-1" >
-        <!-- Button trigger modal -->
+    <div class="col-md-8">
+        <!-- Aquí se muestran los artículos -->
+        {% for art in articulos %}
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ art.titulo_art }}</h5>
+                    <p class="card-text">{{ art.contenido_art }}</p>
+                    <p class="text-muted small">
+                        Publicado por <strong>{{ art.autor_art.username }}</strong> 
+                        el {{ art.creacion_art|date:"d M Y" }}
+                    </p>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">No hay artículos publicados todavía.</p>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-1 text-end">
+        <!-- Botón para crear artículo -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Crear
+            Crear
         </button>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content bg-dark text-white">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Post</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                 <form action="/CrearArticulo/" method="post" enctype="multipart/form-data" class="my-4 bg-dark text-light p-4 rounded-3" id="crearArticulo" >
-                    {% csrf_token %}
-                    <label for="titulo">Título:</label>
-                    <input type="text" name="titulo_art"class="form-control" required>
-
-                    <label for="contenido">Contenido:</label>
-                    <textarea name="contenido_art" class="form-control" required></textarea>
-                    <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" >Guardar</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    </div>
-                </form>
-            </div>
-           
-            </div>
-        </div>
-
     </div>
-
 </div>
 
+<!-- Modal para crear artículo -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Post</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{'/CrearArticulo/'}" method="post" enctype="multipart/form-data" class="my-4 bg-dark text-light p-4 rounded-3" id="crearArticulo">
+          {% csrf_token %}
+          <label for="titulo">Título:</label>
+          <input type="text" name="titulo_art" class="form-control" required>
 
+          <label for="contenido">Contenido:</label>
+          <textarea name="contenido_art" class="form-control" required></textarea>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-<br>
-<br>
 {% endblock %}

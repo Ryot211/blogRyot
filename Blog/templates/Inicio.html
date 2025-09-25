@@ -1,0 +1,31 @@
+{% extends "plantilla.html" %}
+{% block contenido %}
+{% load static %}
+
+<br><br>
+
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-8">
+        <!-- Aquí se muestran los artículos -->
+        {% for art in articulos %}
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ art.titulo_art }}</h5>
+                    <p class="card-text">{{ art.contenido_art }}</p>
+                    <p class="text-muted small">
+                        Publicado por <strong>{{ art.autor_art.username }}</strong> 
+                        el {{ art.creacion_art|date:"d M Y" }}
+                    </p>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">No hay artículos publicados todavía.</p>
+        {% endfor %}
+    </div>
+
+  
+</div>
+{% endblock %}

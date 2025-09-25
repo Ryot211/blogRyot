@@ -5,6 +5,7 @@ urlpatterns = [
    path("registro/", views.registro, name="registro"),
    path('logout/', views.mi_logout, name='logout'),
    path('',views.listadoArticulo),
+   path('UserArt/',views.listadoArticuloUser),
    path('CrearArticulo/',views.CrearArticulo),
     
    
