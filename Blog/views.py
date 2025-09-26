@@ -28,12 +28,13 @@ def registro(request):
 
 
 def listadoArticulo (request):
-    articulosBdd= Articulo.objects.all()
+    articulosBdd= Articulo.objects.all().order_by('-creacion_art')
     return render (request, "Inicio.html",{'articulos':articulosBdd})
+
 @login_required
 def listadoArticuloUser(request):
     if request.user.is_authenticated:
-        articulosBdd = Articulo.objects.filter(autor_art=request.user).order_by('creacion_art')
+        articulosBdd = Articulo.objects.filter(autor_art=request.user).order_by('-creacion_art')
         return render (request,"Muro.html",{"articulos":articulosBdd})
     else:
         return render(request, "Muro.html", {"articulos": []})
@@ -52,7 +53,15 @@ def CrearArticulo(request):
         )
         articulo.save()
         messages.success(request,"Post Creado")
-        return redirect("/")  
+        return redirect("/UserArt/")
     # Si no es POST, mostrar el formulario vacío
     return render(request, "Muro.html")
 # Create your views here.
+
+
+def EliminarArticulo(request,id_art):
+    articuloEliminar=Articulo.objects.get(id_art=id_art)
+    articuloEliminar.delete()
+    messages.success(request,'Articulo Eliminado')
+    return redirect("/UserArt/")
+

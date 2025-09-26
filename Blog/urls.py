@@ -6,7 +6,8 @@ urlpatterns = [
    path('logout/', views.mi_logout, name='logout'),
    path('',views.listadoArticulo),
    path('UserArt/',views.listadoArticuloUser),
-   path('CrearArticulo/',views.CrearArticulo),
+   path("CrearArticulo/", views.CrearArticulo, name="crear_articulo"),  # 👈 el name es clave
+   path('EliminarArticulo/<id_art>/',views.EliminarArticulo)
     
    
 ]
