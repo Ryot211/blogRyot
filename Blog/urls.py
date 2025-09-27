@@ -7,7 +7,9 @@ urlpatterns = [
    path('',views.listadoArticulo),
    path('UserArt/',views.listadoArticuloUser),
    path("CrearArticulo/", views.CrearArticulo, name="crear_articulo"),  # 👈 el name es clave
-   path('EliminarArticulo/<id_art>/',views.EliminarArticulo)
+   path('EliminarArticulo/<id_art>/',views.EliminarArticulo),
+   path('editarArticulo/<id_art>/',views.editarArticulo),
+   path('procesarActualizacionArticulo/',views.procesarActualizacionArticulo, name="procesarActualizacionArticulo")
     
    
 ]

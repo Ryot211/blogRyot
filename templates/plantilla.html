@@ -74,12 +74,14 @@
 
   {% if messages %}
   {% for mensaje in messages %}
-<script type="text/javascript">
-  Swal.fire({
-  title: "{{ mensaje }}",
-  icon: "success",
-  draggable: true
-});
-</script>
-      {% endfor %}
-       {% endif %}
+    <script type="text/javascript">
+      Swal.fire({
+        title: "{{ mensaje|escapejs }}",
+        icon: "{% if mensaje.tags == 'success' %}success{% elif mensaje.tags == 'warning' %}warning{% elif mensaje.tags == 'error' %}error{% else %}info{% endif %}",
+        draggable: true,
+        confirmButtonText: 'Ok'
+      });
+    </script>
+  {% endfor %}
+{% endif %}
+

@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
+from django.db.models import ProtectedError
 from django.contrib import messages
 from .models import Articulo
 from django.contrib.auth.forms import UserCreationForm
@@ -61,7 +62,27 @@ def CrearArticulo(request):
 
 def EliminarArticulo(request,id_art):
     articuloEliminar=Articulo.objects.get(id_art=id_art)
-    articuloEliminar.delete()
-    messages.success(request,'Articulo Eliminado')
+    try:
+        articuloEliminar.delete()
+        messages.success(request,'Articulo Eliminado')
+    except ProtectedError:
+        messages.error(request, "No se puede eliminar.")
+   
     return redirect("/UserArt/")
+
+def editarArticulo(request,id_art):
+    articuloEditar= Articulo.objects.get(id_art=id_art)
+    return render(request,'Muro.html',{'articulos':articuloEditar})
+
+def procesarActualizacionArticulo(request):
+    id_art=request.POST["id_art"]
+    titulo_art = request.POST["titulo_art"]
+    contenido_art = request.POST["contenido_art"]
+    articuloEditar=Articulo.objects.get(id_art=id_art)
+    articuloEditar.titulo_art=titulo_art
+    articuloEditar.contenido_art=contenido_art
+    articuloEditar.save()
+    messages.success(request,'Post Actualizado')
+    return redirect('/')
+
 
